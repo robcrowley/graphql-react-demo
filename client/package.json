@@ -1,0 +1,35 @@
+{
+  "name": "cassette-revival-client",
+  "version": "1.0.0",
+  "description": "An ode to the days of video cassettes and rental stores in every suburb",
+  "main": "index.js",
+  "scripts": {
+    "dev": "next",
+    "build": "next build",
+    "start": "next start"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "apollo-cache-inmemory": "^1.2.9",
+    "apollo-client": "^2.4.1",
+    "apollo-link": "^1.2.2",
+    "apollo-link-context": "^1.0.8",
+    "apollo-link-error": "^1.1.0",
+    "apollo-link-http": "^1.5.4",
+    "apollo-link-persisted-queries": "^0.2.1",
+    "apollo-link-ws": "^1.0.9",
+    "apollo-utilities": "^1.0.21",
+    "graphql": "^14.0.0",
+    "graphql-tag": "^2.9.2",
+    "isomorphic-unfetch": "^2.1.1",
+    "next": "^6.1.1",
+    "npm": "^6.4.1",
+    "prop-types": "^15.6.2",
+    "react": "^16.4.2",
+    "react-apollo": "^2.1.11",
+    "react-dom": "^16.4.2",
+    "subscriptions-transport-ws": "^0.9.14"
+  }
+}

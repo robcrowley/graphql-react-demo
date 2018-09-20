@@ -1,0 +1,9 @@
+export { default as FilmConnector } from './film';
+export { default as UserConnector } from './user';
+export { default as ActorConnector } from './actor';
+export { default as GenreConnector } from './genre';
+export { default as ReviewConnector } from './review';
+export { default as DirectorConnector } from './director';
+export { default as FilmRoleConnector } from './film-role';
+export { default as CharacterConnector } from './character';
+export { default as AggregateRatingConnector } from './aggregate-rating';

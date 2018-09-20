@@ -1,0 +1,10 @@
+export { default as User } from './user';
+export { default as Film } from './film';
+export { default as Actor } from './actor';
+export { default as Genre } from './genre';
+export { default as Review } from './review';
+export { default as Viewer } from './viewer';
+export { default as FilmRole } from './film-role';
+export { default as Director } from './director';
+export { default as Character } from './character';
+export { default as AggregateRating } from './aggregate-rating';
