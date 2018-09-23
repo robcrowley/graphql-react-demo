@@ -8,19 +8,17 @@ export default class extends React.Component {
   render() {
     return (
       <section>
-        {this.props.reviews.edges.any && (
-          <ul className="list-group">
-            {this.props.reviews.edges.map(({node}) => (
-              <li key={node.id} className="list-group-item">
-                <div className="card">
-                  <div className="card-body">
-                    <p className="card-text">{node.content}</p>
-                  </div>
+        <ul className="list-group">
+          {this.props.reviews.edges.map(({ node }) => (
+            <li key={node.id} className="list-group-item">
+              <div className="card">
+                <div className="card-body">
+                  <p className="card-text">{node.content}</p>
                 </div>
-              </li>
-            ))}
-          </ul>
-        )}
+              </div>
+            </li>
+          ))}
+        </ul>
       </section>
     );
   }

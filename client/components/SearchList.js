@@ -47,45 +47,43 @@ const SearchResults = ({ query }) => (
 
       return (
         <section>
-          {data.search.edges.any && (
-            <ul className="list-group">
-              {data.search.edges.map((result, index) => (
-                <li key={result.node.id} className="list-group-item">
-                  {result.node.__typename === "Film" && (
-                    <div className="card">
-                      <div className="card-body">
-                        <h5 className="card-title">{result.node.title}</h5>
-                        <h6 className="card-subtitle mb-2 text-muted">
-                          {result.node.__typename}
-                        </h6>
-                        <p className="card-text">{result.node.description}</p>
-                        <Link
-                          href={{
-                            pathname: "/reviews",
-                            query: { filmId: result.node.filmId }
-                          }}
-                        >
-                          <a className="card-link">Reviews</a>
-                        </Link>
-                      </div>
+          <ul className="list-group">
+            {data.search.edges.map((result, index) => (
+              <li key={result.node.id} className="list-group-item">
+                {result.node.__typename === "Film" && (
+                  <div className="card">
+                    <div className="card-body">
+                      <h5 className="card-title">{result.node.title}</h5>
+                      <h6 className="card-subtitle mb-2 text-muted">
+                        {result.node.__typename}
+                      </h6>
+                      <p className="card-text">{result.node.description}</p>
+                      <Link
+                        href={{
+                          pathname: "/reviews",
+                          query: { filmId: result.node.filmId }
+                        }}
+                      >
+                        <a className="card-link">Reviews</a>
+                      </Link>
                     </div>
-                  )}
-                  {(result.node.__typename === "Actor" ||
-                    result.node.__typename === "Character" ||
-                    result.node.__typename === "Director") && (
-                    <div className="card">
-                      <div className="card-body">
-                        <h5 className="card-title">{result.node.name}</h5>
-                        <h6 className="card-subtitle mb-2 text-muted">
-                          {result.node.__typename}
-                        </h6>
-                      </div>
+                  </div>
+                )}
+                {(result.node.__typename === "Actor" ||
+                  result.node.__typename === "Character" ||
+                  result.node.__typename === "Director") && (
+                  <div className="card">
+                    <div className="card-body">
+                      <h5 className="card-title">{result.node.name}</h5>
+                      <h6 className="card-subtitle mb-2 text-muted">
+                        {result.node.__typename}
+                      </h6>
                     </div>
-                  )}
-                </li>
-              ))}
-            </ul>
-          )}
+                  </div>
+                )}
+              </li>
+            ))}
+          </ul>
         </section>
       );
     }}
