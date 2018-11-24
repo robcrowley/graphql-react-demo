@@ -1,4 +1,5 @@
 import { gql } from "apollo-server-express";
+import { toGlobalId, connectionFromPromisedArray } from "graphql-relay";
 
 export const typeDef = gql`
   type Actor implements Node {

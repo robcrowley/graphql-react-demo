@@ -1,0 +1,1 @@
+{"__schema":{"types":[{"kind":"INTERFACE","name":"Node","possibleTypes":[{"name":"Film"},{"name":"Director"},{"name":"Actor"},{"name":"Character"},{"name":"Genre"},{"name":"Review"},{"name":"User"}]},{"kind":"UNION","name":"SearchResult","possibleTypes":[{"name":"Actor"},{"name":"Director"},{"name":"Film"},{"name":"Character"}]}]}}

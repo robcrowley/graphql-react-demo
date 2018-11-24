@@ -1,12 +1,16 @@
 import { createPersistedQueryLink } from "apollo-link-persisted-queries";
 import { ApolloClient } from "apollo-client";
-import { InMemoryCache } from "apollo-cache-inmemory";
+import {
+  InMemoryCache,
+  IntrospectionFragmentMatcher
+} from "apollo-cache-inmemory";
 import { HttpLink } from "apollo-link-http";
 import { WebSocketLink } from "apollo-link-ws";
 import { setContext } from "apollo-link-context";
 import { onError } from "apollo-link-error";
 import { ApolloLink, split } from "apollo-link";
-import { getMainDefinition } from 'apollo-utilities';
+import { getMainDefinition } from "apollo-utilities";
+import introspectionQueryResultData from "./fragmentTypes.json";
 import fetch from "isomorphic-unfetch";
 
 let apolloClient = null;
@@ -50,6 +54,10 @@ function create(initialState) {
     };
   });
 
+  const fragmentMatcher = new IntrospectionFragmentMatcher({
+    introspectionQueryResultData
+  });
+
   return new ApolloClient({
     connectToDevTools: true,
     link: ApolloLink.from([
@@ -66,7 +74,7 @@ function create(initialState) {
       authLink,
       link
     ]),
-    cache: new InMemoryCache().restore(initialState || {})
+    cache: new InMemoryCache({ fragmentMatcher }).restore(initialState || {})
   });
 }
 
