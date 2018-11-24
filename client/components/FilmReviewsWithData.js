@@ -30,13 +30,25 @@ export const FILM_REVIEWS_QUERY = gql`
 const FILM_REVIEWS_SUBSCRIPTION = gql`
   subscription onReviewAdded {
     reviewAdded {
-      review {
+      film {
         __typename
         id
-        reviewId
-        content
-        rating
-        createdAt
+        filmId
+        title
+        description
+        releasedOn
+        reviews {
+          edges {
+            node {
+              __typename
+              id
+              reviewId
+              content
+              rating
+              createdAt
+            }
+          }
+        }
       }
     }
   }
@@ -53,7 +65,12 @@ const FilmReviewsWithData = ({ filmId }) => (
           reviews={data.film.reviews}
           subscribeToNewReviews={() =>
             subscribeToMore({
-              document: FILM_REVIEWS_SUBSCRIPTION
+              document: FILM_REVIEWS_SUBSCRIPTION,
+              updateQuery: (prev, { subscriptionData }) => {
+                if (!subscriptionData.data) return prev;
+
+                return subscriptionData.data.reviewAdded.film;
+              }
             })
           }
         />

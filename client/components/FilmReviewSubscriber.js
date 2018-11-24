@@ -25,16 +25,17 @@ const FILM_REVIEWS_SUBSCRIPTION = gql`
 `;
 
 const FilmReviewSubscriber = ({ filmId }) => (
-  <Subscription
-    subscription={FILM_REVIEWS_SUBSCRIPTION}
-    shouldResubscribe={true}
-  >
-    {({ data, loading }) => (
+  <Subscription subscription={FILM_REVIEWS_SUBSCRIPTION}>
+    {({
+      data: { reviewAdded: { review: { content: review } = {} } = {} } = {},
+      loading
+    }) => (
       <section>
-        <div className="alert alert-primary" role="alert">
-          New Review:{" "}
-          <strong>{!loading && data.reviewAdded.review.content}</strong>
-        </div>
+        {!loading && review && (
+          <div className="alert alert-primary" role="alert">
+            New Review: <strong>{review}</strong>
+          </div>
+        )}
       </section>
     )}
   </Subscription>
