@@ -1,4 +1,5 @@
 import { gql } from "apollo-server-express";
+import { Kind } from "graphql/language";
 
 export const typeDef = gql`
   scalar Rating
