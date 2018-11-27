@@ -1,4 +1,5 @@
 import React from "react";
+import FavouriteReview from "./FavouriteReview"
 
 export default class extends React.Component {
   componentDidMount() {
@@ -14,6 +15,7 @@ export default class extends React.Component {
               <div className="card">
                 <div className="card-body">
                   <p className="card-text">{node.content}</p>
+                  <FavouriteReview id={node.id} isFavourite={node.isFavourite} />
                 </div>
               </div>
             </li>

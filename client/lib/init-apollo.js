@@ -9,9 +9,12 @@ import { WebSocketLink } from "apollo-link-ws";
 import { setContext } from "apollo-link-context";
 import { onError } from "apollo-link-error";
 import { ApolloLink, split } from "apollo-link";
+import { withClientState } from "apollo-link-state";
 import { getMainDefinition } from "apollo-utilities";
 import introspectionQueryResultData from "./fragmentTypes.json";
 import fetch from "isomorphic-unfetch";
+
+import { resolvers } from '../resolvers';
 
 let apolloClient = null;
 
@@ -23,11 +26,21 @@ if (!process.browser) {
 function create(initialState) {
   const ssrMode = !process.browser;
 
+  const errorLink = onError(({ graphQLErrors, networkError }) => {
+    if (graphQLErrors)
+      graphQLErrors.map(({ message, locations, path }) =>
+        console.log(
+          `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`
+        )
+      );
+    if (networkError) console.log(`[Network error]: ${networkError}`);
+  });
+
   const httpLink = new HttpLink({
     uri: "http://localhost:4000/graphql"
   });
 
-  const link = !ssrMode
+  const transportLink = !ssrMode
     ? split(
         ({ query }) => {
           const { kind, operation } = getMainDefinition(query);
@@ -58,23 +71,20 @@ function create(initialState) {
     introspectionQueryResultData
   });
 
+  const cache = new InMemoryCache({ fragmentMatcher });
+
+  const stateLink = withClientState({ resolvers, cache });
+
   return new ApolloClient({
     connectToDevTools: true,
     link: ApolloLink.from([
-      onError(({ graphQLErrors, networkError }) => {
-        if (graphQLErrors)
-          graphQLErrors.map(({ message, locations, path }) =>
-            console.log(
-              `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`
-            )
-          );
-        if (networkError) console.log(`[Network error]: ${networkError}`);
-      }),
+      errorLink,
+      stateLink,
       createPersistedQueryLink({ useGETForHashedQueries: true }),
       authLink,
-      link
+      transportLink
     ]),
-    cache: new InMemoryCache({ fragmentMatcher }).restore(initialState || {})
+    cache
   });
 }
 

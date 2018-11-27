@@ -11,6 +11,7 @@ const FILM_REVIEWS_SUBSCRIPTION = gql`
         content
         rating
         createdAt
+        isFavourite @client
       }
       film {
         __typename

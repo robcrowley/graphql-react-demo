@@ -20,6 +20,7 @@ export const FILM_REVIEWS_QUERY = gql`
             content
             rating
             createdAt
+            isFavourite @client
           }
         }
       }
@@ -46,6 +47,7 @@ const FILM_REVIEWS_SUBSCRIPTION = gql`
               content
               rating
               createdAt
+              isFavourite @client
             }
           }
         }
