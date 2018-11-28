@@ -11,7 +11,6 @@ const FILM_REVIEWS_SUBSCRIPTION = gql`
         content
         rating
         createdAt
-        isFavourite @client
       }
       film {
         __typename
@@ -34,7 +33,7 @@ const FilmReviewSubscriber = ({ filmId }) => (
       <section>
         {!loading && review && (
           <div className="alert alert-primary" role="alert">
-            New Review: <strong>{review}</strong>
+            <strong>New Review:</strong> {review}
           </div>
         )}
       </section>

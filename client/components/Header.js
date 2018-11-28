@@ -19,6 +19,17 @@ const Header = ({ router: { pathname } }) => (
             </Link>
           </li>
           <li className="nav-item">
+            <Link prefetch href="/bookmarks">
+              <a
+                className={
+                  pathname === "/bookmarks" ? "nav-link is-active" : "nav-link"
+                }
+              >
+                Bookmarks
+              </a>
+            </Link>
+          </li>
+          <li className="nav-item">
             <Link prefetch href="/about">
               <a
                 className={
@@ -29,19 +40,20 @@ const Header = ({ router: { pathname } }) => (
               </a>
             </Link>
           </li>
-          {!process.browser || sessionStorage.getItem("token") === null && (
-            <li className="nav-item">
-              <Link prefetch href="/login">
-                <a
-                  className={
-                    pathname === "/login" ? "nav-link is-active" : "nav-link"
-                  }
-                >
-                  Login
-                </a>
-              </Link>
-            </li>
-          )}
+          {!process.browser ||
+            (sessionStorage.getItem("token") === null && (
+              <li className="nav-item">
+                <Link prefetch href="/login">
+                  <a
+                    className={
+                      pathname === "/login" ? "nav-link is-active" : "nav-link"
+                    }
+                  >
+                    Login
+                  </a>
+                </Link>
+              </li>
+            ))}
           {process.browser && sessionStorage.getItem("token") !== null && (
             <li className="nav-item">
               <Link prefetch href="/logout">

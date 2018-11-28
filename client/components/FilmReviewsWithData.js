@@ -1,6 +1,8 @@
 import gql from "graphql-tag";
 import { Query } from "react-apollo";
+import Bookmark from "./Bookmark";
 import FilmReviews from "./FilmReviews";
+
 
 export const FILM_REVIEWS_QUERY = gql`
   query FilmReviews($filmId: Int!) {
@@ -20,10 +22,12 @@ export const FILM_REVIEWS_QUERY = gql`
             content
             rating
             createdAt
-            isFavourite @client
           }
         }
       }
+    }
+    bookmarks @client {
+      reviews
     }
   }
 `;
@@ -47,7 +51,6 @@ const FILM_REVIEWS_SUBSCRIPTION = gql`
               content
               rating
               createdAt
-              isFavourite @client
             }
           }
         }
@@ -64,7 +67,7 @@ const FilmReviewsWithData = ({ filmId }) => (
 
       return (
         <FilmReviews
-          reviews={data.film.reviews}
+          reviews={data.film.reviews.edges.map(({node}) => node)}
           subscribeToNewReviews={() =>
             subscribeToMore({
               document: FILM_REVIEWS_SUBSCRIPTION,
@@ -75,7 +78,11 @@ const FilmReviewsWithData = ({ filmId }) => (
               }
             })
           }
-        />
+        >
+        {review => (
+          <Bookmark id={review.id} isBookmarked={data.bookmarks.reviews.includes(review.id)} />
+        )}
+        </FilmReviews>
       );
     }}
   </Query>

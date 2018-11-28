@@ -14,7 +14,7 @@ import { getMainDefinition } from "apollo-utilities";
 import introspectionQueryResultData from "./fragmentTypes.json";
 import fetch from "isomorphic-unfetch";
 
-import { resolvers } from '../resolvers';
+import { resolvers, defaults } from "../resolvers";
 
 let apolloClient = null;
 
@@ -71,11 +71,19 @@ function create(initialState) {
     introspectionQueryResultData
   });
 
-  const cache = new InMemoryCache({ fragmentMatcher });
+  const cache = new InMemoryCache({
+    fragmentMatcher,
+    cacheRedirects: {
+      Query: {
+        reviews: (_, { ids }, { getCacheKey }) =>
+          ids.map(id => getCacheKey({ __typename: "Review", id }))
+      }
+    }
+  });
 
-  const stateLink = withClientState({ resolvers, cache });
+  const stateLink = withClientState({ resolvers, defaults, cache });
 
-  return new ApolloClient({
+  const client = new ApolloClient({
     connectToDevTools: true,
     link: ApolloLink.from([
       errorLink,
@@ -86,6 +94,10 @@ function create(initialState) {
     ]),
     cache
   });
+
+  client.onResetStore(stateLink.writeDefaults);
+
+  return client;
 }
 
 export default function initApollo(initialState) {
