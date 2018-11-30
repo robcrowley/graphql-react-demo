@@ -11,7 +11,7 @@ export default class extends React.Component {
   render() {
     return (
       <App>
-        <FilmReviewSubscriber />
+        <FilmReviewSubscriber filmId={this.props.filmId} />
         <FilmReviewWithData filmId={this.props.filmId} />
       </App>
     );

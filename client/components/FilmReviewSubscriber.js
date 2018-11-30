@@ -2,8 +2,8 @@ import gql from "graphql-tag";
 import { Subscription } from "react-apollo";
 
 const FILM_REVIEWS_SUBSCRIPTION = gql`
-  subscription onReviewAdded {
-    reviewAdded {
+  subscription onReviewAdded($id: ID, $filmId: Int) {
+    reviewAdded(id: $id, filmId: $filmId) {
       review {
         __typename
         id
@@ -25,15 +25,12 @@ const FILM_REVIEWS_SUBSCRIPTION = gql`
 `;
 
 const FilmReviewSubscriber = ({ filmId }) => (
-  <Subscription subscription={FILM_REVIEWS_SUBSCRIPTION}>
-    {({
-      data: { reviewAdded: { review: { content: review } = {} } = {} } = {},
-      loading
-    }) => (
+  <Subscription subscription={FILM_REVIEWS_SUBSCRIPTION} variables={{ filmId }}>
+    {({ data, loading }) => (
       <section>
-        {!loading && review && (
+        {!loading && (
           <div className="alert alert-primary" role="alert">
-            <strong>New Review:</strong> {review}
+            <strong>New Review:</strong> {data.reviewAdded.review.content}
           </div>
         )}
       </section>

@@ -1,9 +1,11 @@
+import { extractId } from "../node";
 import { gql } from "apollo-server-express";
 import { topics, mediator } from "../mediator";
+import { withFilter } from "apollo-server-express";
 
 export const typeDef = gql`
   extend type Subscription {
-    reviewAdded: ReviewAddedEvent!
+    reviewAdded(id: ID, filmId: Int): ReviewAddedEvent!
   }
 
   "Represents a review added event on a given film."
@@ -16,7 +18,11 @@ export const typeDef = gql`
 export const resolvers = {
   Subscription: {
     reviewAdded: {
-      subscribe: () => mediator.asyncIterator(topics.REVIEW_ADDED)
+      subscribe: withFilter(
+          () => mediator.asyncIterator(topics.REVIEW_ADDED),
+          ({ reviewAdded: review } , args) =>
+            review.filmId === extractId(args, args => args.filmId)
+        )
     }
   },
   ReviewAddedEvent: {
