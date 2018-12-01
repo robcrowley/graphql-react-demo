@@ -2,7 +2,9 @@ import React from "react";
 
 export default class extends React.Component {
   componentDidMount() {
-    this.props.subscribeToNewReview && this.props.subscribeToNewReviews();
+    if (typeof this.props.subscribeToNewReviews === "function") {
+      this.props.subscribeToNewReviews();
+    }
   }
 
   render() {

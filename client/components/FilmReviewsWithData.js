@@ -33,8 +33,8 @@ export const FILM_REVIEWS_QUERY = gql`
 `;
 
 const FILM_REVIEWS_SUBSCRIPTION = gql`
-  subscription onReviewAdded {
-    reviewAdded {
+  subscription onReviewAdded($id: ID, $filmId: Int) {
+    reviewAdded(id: $id, filmId: $filmId) {
       film {
         __typename
         id
@@ -71,6 +71,7 @@ const FilmReviewsWithData = ({ filmId }) => (
           subscribeToNewReviews={() =>
             subscribeToMore({
               document: FILM_REVIEWS_SUBSCRIPTION,
+              variables: { filmId },
               updateQuery: (prev, { subscriptionData }) => {
                 if (!subscriptionData.data) return prev;
 
